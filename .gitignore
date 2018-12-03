@@ -1,0 +1,48 @@
+build/
+Debug/
+debug/
+
+##############################
+# Pattern exclusion
+##############################
+# MKS project files
+*.pj
+# Python compiled files
+*.pyc
+*.log
+
+##############################
+# CMake ignores
+##############################
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+
+##############################
+# VS Project ignores
+##############################
+#*.vcxproj
+#*.vcxproj.filters
+#*.sln
+*.sdf
+*.suo
+
+*.opensdf
+*.tlog
+*.pdb
+*.idb
+*.obj
+*.exp
+*.dat
+*.bsc
+
+##############################
+# Generated files ignores
+##############################
+src/platform/simulation/sim_swc_tpf_vis/visu/error_text.h
