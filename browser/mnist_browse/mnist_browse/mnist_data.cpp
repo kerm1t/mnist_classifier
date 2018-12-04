@@ -51,3 +51,26 @@ void mnist_data::load(std::string filename, std::vector<unsigned char> buf)
 //  buf(std::istreambuf_iterator<char>(input), {});
   std::vector<unsigned char> buffer(std::istreambuf_iterator<char>(input), {});
 }
+
+void mnist_data::toHDC(HDC hdc)
+{
+/*  COLORREF red = RGB(255, 0, 0);
+  for (int n = 0; n < 20; n++)
+  {
+    int pixels = data.num_rows*data.num_columns;
+    for (int row = 0; row < data.num_rows; row++)
+    {
+      for (int col = 0; col < data.num_columns; col++)
+      {
+        //                  int pix = sdata[16 + row * data.num_rows + col];
+        int pix = sdata[16 + (n*pixels) + row * data.num_rows + col];
+        if (pix == 0)
+          //                    SetPixel(hdc, row, col, red);
+          SetPixel(hdc, n*data.num_columns + col, row, red);
+      }
+    }
+  }
+  LPCWSTR msg = L"rescale to display";
+  RECT rect = { 10,70,200,100 };
+  DrawText(hdc, msg, -1, &rect, 0);
+*/}

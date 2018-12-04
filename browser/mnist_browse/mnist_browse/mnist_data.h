@@ -14,4 +14,5 @@ public:
 
   std::string load_fast(const char *filename);
   void load(std::string filename, std::vector<unsigned char> buf);
+  void toHDC(HDC hdc);
 };

@@ -21,8 +21,33 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 
+HWND hWnd;
+
 mnist_data data;
 std::string sdata;
+
+void toHDC(HDC hdc) // 2do: sdata to be member of data ?
+{
+    COLORREF red = RGB(255, 0, 0);
+    for (int n = 0; n < 20; n++)
+    {
+      int pixels = data.num_rows*data.num_columns;
+      for (int row = 0; row < data.num_rows; row++)
+      {
+        for (int col = 0; col < data.num_columns; col++)
+        {
+          //                  int pix = sdata[16 + row * data.num_rows + col];
+          int pix = sdata[16 + (n*pixels) + row * data.num_rows + col];
+          if (pix == 0)
+            //                    SetPixel(hdc, row, col, red);
+            SetPixel(hdc, n*data.num_columns + col, row, red);
+        }
+      }
+    }
+    LPCWSTR msg = L"first 20 MNIST training samples";
+    RECT rect = { 10,70,300,90 };
+    DrawText(hdc, msg, -1, &rect, 0);
+}
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -51,6 +76,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     std::string filename = "D:\\GIT\\mnist_data\\train\\train-images.idx3-ubyte";
     data = mnist_data();
     sdata = data.load_fast(filename.c_str());
+    toHDC(GetDC(hWnd));  // 2do: call data.toHDC 
 
     // Main message loop:
     while (GetMessage(&msg, nullptr, 0, 0))
@@ -108,7 +134,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
 
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
+   hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
@@ -158,26 +184,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: Add any drawing code that uses hdc here...
-
-            COLORREF red = RGB(255, 0, 0);
-            for (int n = 0; n < 20; n++)
-            {
-              int pixels = data.num_rows*data.num_columns;
-              for (int row = 0; row < data.num_rows; row++)
-              {
-                for (int col = 0; col < data.num_columns; col++)
-                {
-//                  int pix = sdata[16 + row * data.num_rows + col];
-                  int pix = sdata[16 + (n*pixels) + row * data.num_rows + col];
-                  if (pix == 0)
-//                    SetPixel(hdc, row, col, red);
-                    SetPixel(hdc, n*data.num_columns + col, row, red);
-                }
-              }
-            }
-            LPCWSTR msg=L"rescale to display";
-            RECT rect = {10,70,200,100};
-            DrawText(hdc, msg, -1, &rect, 0);
+            toHDC(hdc);
 
             EndPaint(hWnd, &ps);
         }
