@@ -26,6 +26,8 @@ HWND hWnd;
 mnist_data data;
 std::string sdata;
 
+#define MNIST_HEADER 16 // bytes
+
 void toHDC(HDC hdc) // 2do: sdata to be member of data ?
 {
     COLORREF red = RGB(255, 0, 0);
@@ -36,11 +38,9 @@ void toHDC(HDC hdc) // 2do: sdata to be member of data ?
       {
         for (int col = 0; col < data.num_columns; col++)
         {
-          //                  int pix = sdata[16 + row * data.num_rows + col];
-          int pix = sdata[16 + (n*pixels) + row * data.num_rows + col];
+          int pix = sdata[MNIST_HEADER + (n*pixels) + row * data.num_rows + col];
           if (pix == 0)
-            //                    SetPixel(hdc, row, col, red);
-            SetPixel(hdc, n*data.num_columns + col, row, red);
+            SetPixel(hdc, 10 + n*(data.num_columns+5) + col, 10 + row, red);
         }
       }
     }
@@ -135,7 +135,10 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
 
    hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
+      CW_USEDEFAULT, 0,
+     800, // width
+     200, // height
+     nullptr, nullptr, hInstance, nullptr);
 
    if (!hWnd)
    {
