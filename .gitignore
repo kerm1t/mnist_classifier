@@ -1,6 +1,7 @@
 build/
 Debug/
 debug/
+.vs/
 
 ##############################
 # Pattern exclusion
